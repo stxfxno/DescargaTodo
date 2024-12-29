@@ -1,49 +1,214 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Descargar Videos de Facebook</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
-    input {
-      padding: 10px;
-      width: 80%;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargador de Videos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1877f2;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #1877f2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #166fe5;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .instructions {
+            background-color: #f7f8fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 5px;
+        }
+        .success {
+            color: green;
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+        }
+        #downloadOptions {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .download-button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .loading:after {
+            content: '...';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80% { content: '....'; }
+            100% { content: '.....'; }
+        }
+    </style>
 </head>
 <body>
-  <h1>Descargar Videos de Facebook</h1>
-  <p>Pega el enlace del video a continuación:</p>
-  <input type="text" id="urlInput" placeholder="Pega el enlace aquí..." />
-  <button onclick="downloadFacebookVideo()">Descargar</button>
-  <p id="message"></p>
+    <div class="container">
+        <h1>Descargador de Videos</h1>
+        
+        <div class="input-group">
+            <label for="videoUrl">Pega el enlace del video aquí:</label>
+            <input type="url" id="videoUrl" placeholder="https://www.facebook.com/watch?v=..." required>
+        </div>
+        
+        <button id="processButton" onclick="processUrl()">Descargar Video</button>
+        
+        <div id="loading" class="loading">Procesando el enlace</div>
+        
+        <div id="error" class="error"></div>
+        <div id="success" class="success"></div>
+        
+        <div id="downloadOptions"></div>
+        
+        <div class="instructions">
+            <h3>Instrucciones:</h3>
+            <ol>
+                <li>Abre Facebook o Instagram en tu celular o computadora</li>
+                <li>Encuentra el video que quieres descargar</li>
+                <li>Presiona el botón de "Compartir"</li>
+                <li>Selecciona "Copiar enlace"</li>
+                <li>Pega el enlace en el campo de arriba</li>
+                <li>Presiona el botón "Descargar Video"</li>
+                <li>Se abrirá una nueva página donde podrás descargar el video</li>
+            </ol>
+        </div>
+    </div>
 
-  <script>
-    function downloadFacebookVideo() {
-      const url = document.getElementById('urlInput').value;
-      if (!url) {
-        document.getElementById('message').innerText = 'Por favor, ingresa un enlace válido.';
-        return;
-      }
+    <script>
+        const button = document.getElementById('processButton');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const success = document.getElementById('success');
+        const urlInput = document.getElementById('videoUrl');
 
-      // Redirige a un servicio externo como Getfvid
-      const downloadUrl = `https://snapsave.app/facebook?url=${encodeURIComponent(url)}`;
-      window.open(downloadUrl, '_blank');
-    }
-  </script>
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+            success.style.display = 'none';
+            loading.style.display = 'none';
+            button.disabled = false;
+        }
+
+        function showSuccess(message) {
+            success.textContent = message;
+            success.style.display = 'block';
+            error.style.display = 'none';
+            loading.style.display = 'none';
+            button.disabled = false;
+        }
+
+        function processUrl() {
+            const url = urlInput.value.trim();
+            
+            // Reset states
+            error.style.display = 'none';
+            success.style.display = 'none';
+            button.disabled = true;
+            loading.style.display = 'block';
+
+            // Validación básica
+            if (!url) {
+                showError('Por favor, ingresa un enlace');
+                return;
+            }
+
+            if (!url.includes('facebook.com') && !url.includes('instagram.com')) {
+                showError('Por favor, ingresa un enlace válido de Facebook o Instagram');
+                return;
+            }
+
+            try {
+                // Usamos un servicio alternativo más confiable
+                const downloadUrl = `https://sssinstagram.com/download?url=${encodeURIComponent(url)}`;
+                
+                showSuccess('¡Redirigiendo a la página de descarga!');
+                
+                // Pequeño delay para mostrar el mensaje de éxito
+                setTimeout(() => {
+                    window.open(downloadUrl, '_blank');
+                    button.disabled = false;
+                }, 1000);
+
+            } catch (err) {
+                showError('Ocurrió un error al procesar el enlace. Por favor, intenta de nuevo.');
+            }
+        }
+
+        // Permitir usar Enter para enviar
+        urlInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                processUrl();
+            }
+        });
+    </script>
 </body>
 </html>
