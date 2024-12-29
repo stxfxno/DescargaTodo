@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Descargar Videos de Facebook</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Descargar Videos de Facebook</h1>
+  <p>Pega el enlace del video a continuación:</p>
+  <input type="text" id="urlInput" placeholder="Pega el enlace aquí..." />
+  <button onclick="downloadFacebookVideo()">Descargar</button>
+  <p id="message"></p>
+
+  <script>
+    function downloadFacebookVideo() {
+      const url = document.getElementById('urlInput').value;
+      if (!url) {
+        document.getElementById('message').innerText = 'Por favor, ingresa un enlace válido.';
+        return;
+      }
+
+      // Redirige a un servicio externo como Getfvid
+      const downloadUrl = `https://snapsave.app/facebook?url=${encodeURIComponent(url)}`;
+      window.open(downloadUrl, '_blank');
+    }
+  </script>
+</body>
+</html>
