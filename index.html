@@ -1,54 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Productividad</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productivity Project</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div class="container">
-        <h1>Mis Tareas</h1>
-
-        <div class="task-form">
-            <input type="text" id="taskInput" placeholder="Nueva tarea" />
-            <input type="date" id="dueDate" />
-            <input type="text" id="taskTag" placeholder="Etiqueta (opcional)" />
-            <button onclick="addTask()">Agregar tarea</button>
-        </div>
-
-        <div class="calendar">
-            <input type="date" id="calendarInput" onchange="assignTaskToDate()" />
-            <div id="taskCalendar"></div>
-        </div>
-
-        <div class="goal-form">
-            <input type="text" id="goalInput" placeholder="Definir meta" />
-            <input type="date" id="goalDeadline" />
-            <button onclick="addGoal()">Agregar meta</button>
-        </div>
-
-
-        <div class="checklist-form">
-            <input type="text" id="checklistInput" placeholder="Nuevo paso" />
-            <button onclick="addChecklistItem()">Agregar paso</button>
-        </div>
-        <ul id="checklist"></ul>
-
-
-        <div class="pomodoro">
-            <button onclick="startPomodoro()">Iniciar Pomodoro</button>
-            <p id="pomodoroTimer">25:00</p>
-        </div>
-
-
-        <!-- Lista de tareas -->
-        <ul id="taskList"></ul>
+  <div class="container">
+    <h1>Lista de Tareas Pendientes</h1>
+    <div class="buttons">
+      <button id="addButton">Agregar Tarea</button>
     </div>
 
-    <script src="script.js"></script>
-</body>
+    <div id="addTaskForm" class="form-container">
+      <h2>Agregar Tarea</h2>
+      <form id="taskForm">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required>
 
+        <label for="categoria">Categoría:</label>
+        <input type="text" id="categoria" required>
+
+        <label for="fechaLimite">Fecha Límite:</label>
+        <input type="date" id="fechaLimite" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" required></textarea>
+
+        <button type="submit">Guardar Tarea</button>
+        <button type="button" id="cancelButton">Cancelar</button>
+      </form>
+    </div>
+
+    <table id="taskTable">
+      <thead>
+        <tr>
+          <th>Fecha de Subida</th>
+          <th>Título</th>
+          <th>Categoría</th>
+          <th>Fecha Límite</th>
+          <th>Descripción</th>
+          <th>Hecho</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se llenarán los datos -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>

@@ -1,213 +1,94 @@
-// Referencias a los elementos HTML
-const taskInput = document.getElementById('taskInput');
-const taskList = document.getElementById('taskList');
-
-// Cargar tareas al iniciar
-document.addEventListener('DOMContentLoaded', loadTasks);
-
-// Agregar nueva tarea
-function addTask() {
-  const taskText = document.getElementById('taskInput').value.trim();
-  const dueDate = document.getElementById('dueDate').value;
-  const taskTag = document.getElementById('taskTag').value.trim();
-  if (taskText === '') return;
-
-  const task = {
-    id: Date.now(),
-    text: taskText,
-    dueDate: dueDate,
-    tag: taskTag,
-    completed: false,
-  };
-
-  saveTask(task);
-  loadTasks();
-}
-
-function saveTask(task) {
-  const tasks = getTasks();
-  tasks.push(task);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-function getTasks() {
-  const tasks = localStorage.getItem('tasks');
-  return tasks ? JSON.parse(tasks) : [];
-}
-
-
-// Guardar tarea en localStorage
-function saveTask(task) {
-  const tasks = getTasks();
-  tasks.push(task);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-// Obtener tareas de localStorage
-function getTasks() {
-  const tasks = localStorage.getItem('tasks');
-  return tasks ? JSON.parse(tasks) : [];
-}
-
-// Cargar y mostrar tareas
-function loadTasks() {
-  const tasks = getTasks();
-  taskList.innerHTML = '';
-  tasks.forEach(task => {
-    const li = document.createElement('li');
-    li.textContent = task.text;
-    if (task.completed) {
-      li.classList.add('completed');
-    }
-    
-    // Marcar tarea como completada al hacer click
-    li.addEventListener('click', () => toggleTaskCompletion(task.id));
-
-    // Botón para eliminar tarea
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Eliminar';
-    deleteButton.addEventListener('click', (e) => {
-      e.stopPropagation();  // Evita que se active el evento de marcar completado
-      deleteTask(task.id);
-    });
-
-    li.appendChild(deleteButton);
-    taskList.appendChild(li);
-  });
-}
-
-// Marcar tarea como completada
-function toggleTaskCompletion(taskId) {
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === taskId);
-  task.completed = !task.completed;
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  loadTasks();
-}
-
-// Eliminar tarea
-function deleteTask(taskId) {
-  let tasks = getTasks();
-  tasks = tasks.filter(task => task.id !== taskId);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  loadTasks();
-}
-
-function assignTaskToDate() {
-  const date = document.getElementById('calendarInput').value;
-  const tasks = getTasks();
-  const task = tasks.find(task => task.dueDate === date);
-  if (task) {
-    document.getElementById('taskCalendar').innerHTML = `Tarea: ${task.text}`;
+// Ejemplo de tareas iniciales
+let tasks = [
+  {
+    fechaSubida: '2025-01-01',
+    titulo: 'Estudiar JS',
+    categoria: 'Educación',
+    fechaLimite: '2025-01-10',
+    descripcion: 'Repasar conceptos avanzados de JS.',
+    hecho: false
+  },
+  {
+    fechaSubida: '2025-01-02',
+    titulo: 'Comprar comida',
+    categoria: 'Compras',
+    fechaLimite: '2025-01-03',
+    descripcion: 'Ir al supermercado.',
+    hecho: true
   }
-}
+];
 
-function addGoal() {
-  const goalText = document.getElementById('goalInput').value.trim();
-  const deadline = document.getElementById('goalDeadline').value;
-  if (goalText === '') return;
+// Función para mostrar las tareas en la tabla
+function displayTasks() {
+  const tableBody = document.querySelector("#taskTable tbody");
+  tableBody.innerHTML = '';
 
-  const goal = {
-    id: Date.now(),
-    text: goalText,
-    deadline: deadline,
-    progress: 0,
-  };
-
-  saveGoal(goal);
-}
-
-function saveGoal(goal) {
-  const goals = getGoals();
-  goals.push(goal);
-  localStorage.setItem('goals', JSON.stringify(goals));
-}
-
-function getGoals() {
-  const goals = localStorage.getItem('goals');
-  return goals ? JSON.parse(goals) : [];
-}
-
-function addChecklistItem() {
-  const itemText = document.getElementById('checklistInput').value.trim();
-  if (itemText === '') return;
-
-  const item = {
-    id: Date.now(),
-    text: itemText,
-    completed: false,
-  };
-
-  saveChecklistItem(item);
-  loadChecklist();
-}
-
-function saveChecklistItem(item) {
-  const checklist = getChecklist();
-  checklist.push(item);
-  localStorage.setItem('checklist', JSON.stringify(checklist));
-}
-
-function getChecklist() {
-  const checklist = localStorage.getItem('checklist');
-  return checklist ? JSON.parse(checklist) : [];
-}
-
-
-let pomodoroInterval;
-let seconds = 25 * 60;
-
-function startPomodoro() {
-  if (pomodoroInterval) clearInterval(pomodoroInterval);
-
-  pomodoroInterval = setInterval(() => {
-    if (seconds <= 0) {
-      clearInterval(pomodoroInterval);
-      alert("Pomodoro completado");
-      seconds = 25 * 60;  // Resetear el temporizador
-    } else {
-      seconds--;
-      document.getElementById('pomodoroTimer').textContent = formatTime(seconds);
-    }
-  }, 1000);
-}
-
-function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-}
-
-
-function setReminders() {
-  const tasks = getTasks();
-  tasks.forEach(task => {
-    const taskDueDate = new Date(task.dueDate).getTime();
-    const currentTime = Date.now();
-    const timeToReminder = taskDueDate - currentTime - 60000;  // 1 minuto antes del vencimiento
-
-    if (timeToReminder > 0) {
-      setTimeout(() => {
-        alert(`Recordatorio: La tarea "${task.text}" está por vencer`);
-      }, timeToReminder);
-    }
+  tasks.forEach((task, index) => {
+    const row = document.createElement('tr');
+    
+    row.innerHTML = `
+      <td>${task.fechaSubida}</td>
+      <td>${task.titulo}</td>
+      <td>${task.categoria}</td>
+      <td>${task.fechaLimite}</td>
+      <td>${task.descripcion}</td>
+      <td><input type="checkbox" ${task.hecho ? 'checked' : ''} onclick="toggleDone(${index})"></td>
+      <td><button class="delete" onclick="deleteTask(${index})">Eliminar</button></td>
+    `;
+    
+    tableBody.appendChild(row);
   });
 }
 
-setReminders();
-
-
-function generateProgressReport() {
-  const tasks = getTasks();
-  const goals = getGoals();
-
-  let completedTasks = tasks.filter(task => task.completed).length;
-  let totalTasks = tasks.length;
-
-  let completedGoals = goals.filter(goal => goal.progress === 100).length;
-  let totalGoals = goals.length;
-
-  alert(`Informe de progreso:\n\nTareas completadas: ${completedTasks} de ${totalTasks}\nMetas completadas: ${completedGoals} de ${totalGoals}`);
+// Función para marcar la tarea como hecha o no
+function toggleDone(index) {
+  tasks[index].hecho = !tasks[index].hecho;
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  displayTasks();
 }
 
-generateProgressReport();
+// Función para eliminar una tarea
+function deleteTask(index) {
+  tasks.splice(index, 1);  // Eliminar la tarea del arreglo
+  localStorage.setItem('tasks', JSON.stringify(tasks)); // Actualizar el localStorage
+  displayTasks();  // Volver a mostrar la tabla
+}
+
+// Función para mostrar el formulario para agregar tarea
+document.getElementById('addButton').addEventListener('click', () => {
+  document.getElementById('addTaskForm').style.display = 'block';
+});
+
+// Función para cancelar la creación de tarea
+document.getElementById('cancelButton').addEventListener('click', () => {
+  document.getElementById('addTaskForm').style.display = 'none';
+});
+
+// Función para agregar una nueva tarea
+document.getElementById('taskForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const newTask = {
+    fechaSubida: new Date().toISOString().split('T')[0], // Fecha actual
+    titulo: document.getElementById('titulo').value,
+    categoria: document.getElementById('categoria').value,
+    fechaLimite: document.getElementById('fechaLimite').value,
+    descripcion: document.getElementById('descripcion').value,
+    hecho: false
+  };
+
+  tasks.push(newTask); // Agregar la nueva tarea al arreglo
+  localStorage.setItem('tasks', JSON.stringify(tasks)); // Guardar en localStorage
+  displayTasks();  // Volver a mostrar la tabla
+
+  // Limpiar el formulario y ocultarlo
+  document.getElementById('taskForm').reset();
+  document.getElementById('addTaskForm').style.display = 'none';
+});
+
+// Cargar las tareas desde el almacenamiento local (si existen)
+if (localStorage.getItem('tasks')) {
+  tasks = JSON.parse(localStorage.getItem('tasks'));
+}
+
+displayTasks();

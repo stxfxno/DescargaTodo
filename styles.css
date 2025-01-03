@@ -1,165 +1,144 @@
-/* Estilos generales */
+/* Reset de márgenes y padding */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
 
 /* Contenedor principal */
 .container {
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
-/* Estilos de la barra de navegación */
-nav {
-  background-color: #2c3e50;
-  padding: 10px;
+/* Estilos para el encabezado */
+h1 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 18px;
+/* Estilos para los botones */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-/* Formularios de entrada */
-input[type="text"],
-input[type="date"],
 button {
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 300px;
+  padding: 10px 20px;
   font-size: 16px;
-}
-
-button {
-  background-color: #3498db;
+  background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: #45a049;
 }
 
-/* Estilo para las tareas */
-.task-list, .goal-list, .checklist {
-  list-style-type: none;
-  padding: 0;
-}
-
-.task-list li, .goal-list li, .checklist li {
-  background-color: #ecf0f1;
-  margin: 10px 0;
-  padding: 10px;
+/* Estilos del formulario */
+.form-container {
+  display: none;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-.task-list li.completed, .checklist li.completed {
-  background-color: #2ecc71;
-  text-decoration: line-through;
-}
-
-.task-list li:hover, .goal-list li:hover, .checklist li:hover {
-  background-color: #bdc3c7;
-}
-
-/* Temporizador Pomodoro */
-.pomodoro {
-  text-align: center;
-  margin-top: 20px;
-}
-
-#pomodoroTimer {
-  font-size: 30px;
-  font-weight: bold;
+#taskForm label {
+  display: block;
   margin-top: 10px;
-}
-
-/* Calendario y Agenda */
-.calendar {
-  margin-top: 30px;
-}
-
-#taskCalendar {
-  margin-top: 10px;
-  font-size: 18px;
   font-weight: bold;
+}
+
+#taskForm input, #taskForm textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+#taskForm button {
+  margin-top: 20px;
+  background-color: #4CAF50;
+}
+
+#taskForm button[type="button"] {
+  background-color: #f44336;
+}
+
+#taskForm button[type="button"]:hover {
+  background-color: #d32f2f;
+}
+
+/* Estilos de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
   padding: 10px;
-  background-color: #f1c40f;
-  border-radius: 5px;
+  text-align: left;
+  border: 1px solid #ddd;
 }
 
-/* Formulario de metas y checklists */
-.goal-form, .checklist-form {
-  margin: 20px 0;
+th {
+  background-color: #f2f2f2;
 }
 
-.goal-form input, .checklist-form input {
-  width: 80%;
-  display: inline-block;
+input[type="checkbox"] {
+  cursor: pointer;
 }
 
-.goal-form button, .checklist-form button {
-  width: 18%;
-  display: inline-block;
-  margin-left: 10px;
+button.delete {
+  background-color: #f44336;
 }
 
-/* Formato de la sección de metas */
-.goal-list {
-  margin-top: 20px;
+button.delete:hover {
+  background-color: #d32f2f;
 }
 
-.goal-list li {
-  background-color: #f39c12;
-}
-
-.checklist {
-  margin-top: 20px;
-}
-
-/* Notificaciones */
-.notification {
-  background-color: #e74c3c;
-  color: white;
-  padding: 10px;
-  margin-top: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-/* Pantallas pequeñas */
-@media (max-width: 768px) {
+/* Estilos responsive */
+@media screen and (max-width: 768px) {
   .container {
     padding: 10px;
   }
 
-  input[type="text"],
-  input[type="date"],
+  table {
+    font-size: 14px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   button {
     width: 100%;
   }
 
-  nav {
-    text-align: left;
+  th, td {
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
   }
 
-  .goal-form input,
-  .checklist-form input {
-    width: 70%;
+  button {
+    font-size: 14px;
+    padding: 8px;
   }
 
-  .goal-form button,
-  .checklist-form button {
-    width: 28%;
+  table {
+    font-size: 12px;
   }
 }
