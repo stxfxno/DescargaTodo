@@ -1,0 +1,165 @@
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilos de la barra de navegación */
+nav {
+  background-color: #2c3e50;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+}
+
+/* Formularios de entrada */
+input[type="text"],
+input[type="date"],
+button {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 300px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Estilo para las tareas */
+.task-list, .goal-list, .checklist {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-list li, .goal-list li, .checklist li {
+  background-color: #ecf0f1;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.task-list li.completed, .checklist li.completed {
+  background-color: #2ecc71;
+  text-decoration: line-through;
+}
+
+.task-list li:hover, .goal-list li:hover, .checklist li:hover {
+  background-color: #bdc3c7;
+}
+
+/* Temporizador Pomodoro */
+.pomodoro {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#pomodoroTimer {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Calendario y Agenda */
+.calendar {
+  margin-top: 30px;
+}
+
+#taskCalendar {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f1c40f;
+  border-radius: 5px;
+}
+
+/* Formulario de metas y checklists */
+.goal-form, .checklist-form {
+  margin: 20px 0;
+}
+
+.goal-form input, .checklist-form input {
+  width: 80%;
+  display: inline-block;
+}
+
+.goal-form button, .checklist-form button {
+  width: 18%;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* Formato de la sección de metas */
+.goal-list {
+  margin-top: 20px;
+}
+
+.goal-list li {
+  background-color: #f39c12;
+}
+
+.checklist {
+  margin-top: 20px;
+}
+
+/* Notificaciones */
+.notification {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  button {
+    width: 100%;
+  }
+
+  nav {
+    text-align: left;
+  }
+
+  .goal-form input,
+  .checklist-form input {
+    width: 70%;
+  }
+
+  .goal-form button,
+  .checklist-form button {
+    width: 28%;
+  }
+}
